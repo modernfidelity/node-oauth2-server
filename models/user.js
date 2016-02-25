@@ -1,13 +1,9 @@
 /**
  *
- * CLIENT (APPLICATION) MODEL
+ * USER MODEL
  *
  * @file
  * Provides the handlers and schema definitions for the specific model
- *
- *
- * id, name, secret, user_id
- *
  *
  */
 
@@ -26,7 +22,7 @@ var uuid = require('node-uuid');
  * @param request
  * @param reply
  */
-exports.create = function (data, reply) {
+exports.create = function (request, reply) {
 
 
     // Generate a salt
@@ -39,12 +35,12 @@ exports.create = function (data, reply) {
     console.log(hash + '\n');
     console.log(uuid + '\n');
 
-    db.con.query('INSERT INTO clients (id, name, secret, user_id) VALUES (?, ?, ?, ?)', [
+    db.con.query('INSERT INTO users (username, mail, pass, uuid) VALUES (?, ?, ?, ?)', [
 
-        data.id,
-        data.name,
-        data.secret,
-        data.user_id,
+        request.payload.username,
+        request.payload.email,
+        hash,
+        uuid.v4()
 
 
     ], function (err, results) {

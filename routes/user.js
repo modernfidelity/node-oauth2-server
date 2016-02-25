@@ -1,15 +1,52 @@
+/**
+ *
+ * User Routes
+ *
+ * @type {*|exports|module.exports}
+ *
+ */
+
 var express = require('express');
-var router = express.Router();
+var bodyParser = require('body-parser');
+var app = express();
+var user = require('../models/user');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+// GET User listing.
+app.get('/', function (req, res, next) {
+
+    res.send('list of users');
 });
 
 
-router.get('/:user_id', function(req, res, next) {
-  res.send('respond with a resource ' + req.params.user_id);
+/**
+ *
+ * GET User
+ *
+ */
+app.get('/:user_id', function (req, res, next) {
+
+
+    // Check model
+    user.findOne(req.params.user_id, function(result){
+
+        console.log(result);
+        res.json({data: result});
+
+    });
+
+
+
+    //res.send('respond with a user resource ' + req.params.user_id);
 });
 
+// POST User
+app.post('/', function (req, res) {
+    res.send('respond with a user create ');
+});
 
-module.exports = router;
+// DELETE User
+app.delete('/:user_id', function (req, res) {
+    res.send('respond with a user delete ');
+});
+
+module.exports = app;

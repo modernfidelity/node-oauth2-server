@@ -12,20 +12,6 @@ module.exports = function() {
 
     var settings = {
 
-        local: {
-            'dynamodb': 'http://localhost:8000',
-            'mysql': 'localhost'
-        },
-        develop: {
-            'dynamodb': 'https://dynamodb.eu-west-1.amazonaws.com',
-            'mysql': 'localhost'
-        },
-        production: {
-            'dynamodb': 'https://dynamodb.eu-west-1.amazonaws.com',
-            'mysql': 'localhost'
-
-        },
-
         // Single items based on ENV_VARS
         dynamodb: {
             'host'      : 'localhost', //process.env.MYSQL_HOST
