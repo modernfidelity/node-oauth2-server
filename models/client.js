@@ -29,31 +29,38 @@ var uuid = require('node-uuid');
 exports.create = function (data, reply) {
 
 
+    console.log(data.body);
+
+    var client = data.body;
+
     // Generate a salt
     var salt = bcrypt.genSaltSync(10);
+    //
+    //// Hash the password with the salt
+    var hash = bcrypt.hashSync(client.name, salt);
 
-    // Hash the password with the salt
-    var hash = bcrypt.hashSync(request.payload.password, salt);
 
-
-    console.log(hash + '\n');
-    console.log(uuid + '\n');
-
+    //
+    //console.log(hash + '\n');
+    //console.log(uuid + '\n');
+    //
     db.con.query('INSERT INTO clients (id, name, secret, user_id) VALUES (?, ?, ?, ?)', [
 
-        data.id,
-        data.name,
-        data.secret,
-        data.user_id,
-
+        client.id,
+        client.name,
+        hash, // secret
+        client.user_id,
 
     ], function (err, results) {
 
         if (err) throw err;
 
-        console.log(request.payload.username + ' : user created in db:\n');
+        console.log('client created in db:\n');
 
-        reply({status: 'ok'});
+        reply({
+            status: 'ok'
+
+        });
 
     });
 
@@ -73,7 +80,7 @@ exports.create = function (data, reply) {
  */
 exports.findOne = function (id, reply) {
 
-    db.con.query('SELECT uuid, username, email FROM user WHERE uuid = ?',
+    db.con.query('SELECT id, name, secret FROM clients WHERE id = ?',
 
         [id],
 

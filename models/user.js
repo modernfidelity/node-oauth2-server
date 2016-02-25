@@ -25,20 +25,23 @@ var uuid = require('node-uuid');
 exports.create = function (request, reply) {
 
 
+
+    var user = request.body;
+
     // Generate a salt
     var salt = bcrypt.genSaltSync(10);
 
     // Hash the password with the salt
-    var hash = bcrypt.hashSync(request.payload.password, salt);
+    var hash = bcrypt.hashSync(user.password, salt);
 
 
     console.log(hash + '\n');
     console.log(uuid + '\n');
 
-    db.con.query('INSERT INTO users (username, mail, pass, uuid) VALUES (?, ?, ?, ?)', [
+    db.con.query('INSERT INTO users (uuid, username, email, password ) VALUES (?, ?, ?, ?)', [
 
-        request.payload.username,
-        request.payload.email,
+        user.username,
+        user.email,
         hash,
         uuid.v4()
 
@@ -47,7 +50,7 @@ exports.create = function (request, reply) {
 
         if (err) throw err;
 
-        console.log(request.payload.username + ' : user created in db:\n');
+        console.log(user.username + ' : user created in db:\n');
 
         reply({status: 'ok'});
 

@@ -25,28 +25,43 @@ app.get('/', function (req, res, next) {
  */
 app.get('/:user_id', function (req, res, next) {
 
+    // Check model
+    user.findOne(req.params.user_id, function (result) {
+        console.log(result);
+        res.json({data: result});
+    });
+    //res.send('respond with a user resource ' + req.params.user_id);
+
+});
+
+
+/**
+ *
+ * Create User
+ *
+ */
+app.post('/', function (userData, res) {
 
     // Check model
-    user.findOne(req.params.user_id, function(result){
+    user.create(userData, function (result) {
 
         console.log(result);
+
         res.json({data: result});
 
     });
 
-
-
-    //res.send('respond with a user resource ' + req.params.user_id);
+    
 });
 
-// POST User
-app.post('/', function (req, res) {
-    res.send('respond with a user create ');
-});
-
-// DELETE User
+/**
+ *
+ * Delete User
+ *
+ */
 app.delete('/:user_id', function (req, res) {
     res.send('respond with a user delete ');
 });
 
+//
 module.exports = app;

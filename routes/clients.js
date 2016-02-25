@@ -14,40 +14,55 @@ var client = require('../models/client');
 // GET Client listing.
 app.get('/', function (req, res, next) {
 
-  res.send('list of client applications ');
+    res.send('list of client applications ');
 
 });
 
 
 /**
  *
- * GET Client
+ * Retreive Client
  *
  */
 app.get('/:client_id', function (req, res, next) {
 
 
-  // Check model
-  client.findOne(req.params.client_id, function(result){
+    // Check model
+    client.findOne(req.params.client_id, function (result) {
 
-    console.log(result);
-    res.json({data: result});
+        console.log(result);
+        res.json({data: result});
 
-  });
+    });
 
 
-
-  //res.send('respond with a client resource ' + req.params.client_id);
+    //res.send('respond with a client resource ' + req.params.client_id);
 });
 
-// POST client
-app.post('/', function (req, res) {
-  res.send('respond with a client create ');
+
+/**
+ *
+ * Create Client
+ *
+ */
+app.post('/', function (req, reply) {
+
+    // Check model
+    client.create(req, function (result) {
+        console.log("client create");
+        reply.json({data: result});
+
+    });
+
+
 });
+
+
+
 
 // DELETE client
 app.delete('/:client_id', function (req, res) {
-  res.send('respond with a client delete ');
+    res.send('respond with a client delete ');
 });
 
 module.exports = app;
