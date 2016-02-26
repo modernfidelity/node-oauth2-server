@@ -9,10 +9,12 @@
  *
  */
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var user = require('../models/user');
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    app = express(),
+    passport = require('passport'),
+    user = require('../models/user');
+
 
 /**
  *
@@ -21,15 +23,23 @@ var user = require('../models/user');
  *  @todo : review if this required + complete ? ...useful for groupings i.e. /users/students , /users/table-tennis-players
  *
  */
-app.get('/', function (req, res, next) {
+app.get('/', function (req, res) {
 
-    res.send('list of users');
+    var data = {}; // @todo : add pager data
+
+    // Check model
+    user.index(data, function (result) {
+
+        res.json({data: result});
+
+    });
+
 });
 
 
 /**
  *
- * Create User
+ * Create
  *
  */
 app.post('/', function (userData, res) {
@@ -46,7 +56,7 @@ app.post('/', function (userData, res) {
 
 /**
  *
- * Retreive User
+ * Retrieve
  *
  */
 app.get('/:user_id', function (req, res, next) {
@@ -64,7 +74,7 @@ app.get('/:user_id', function (req, res, next) {
 
 /**
  *
- * Update User
+ * Update
  *
  * @todo : complete
  *
@@ -83,7 +93,7 @@ app.put('/:user_id', function (req, res, next) {
 
 /**
  *
- * Delete User
+ * Delete
  *
  * @@todo : complete
  *

@@ -15,6 +15,36 @@ var bcrypt = require('bcrypt');
 var uuid = require('node-uuid');
 
 
+
+/**
+ *
+ * Index
+ *
+ * @param request
+ * @param reply
+ *
+ *
+ * @todo : err handling
+ *
+ */
+exports.index = function (data, reply) {
+
+    db.con.query('SELECT uuid, username, email FROM users',
+
+        function (err, result) {
+
+            if (err) throw err;
+
+            //console.log('Data received from Db:\n', result);
+
+            reply(result);
+
+        });
+
+
+};
+
+
 /**
  *
  * Create a single item
@@ -59,7 +89,7 @@ exports.create = function (request, reply) {
 
 /**
  *
- * Find single item
+ * Retrieve
  *
  * @param request
  * @param reply

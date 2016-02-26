@@ -11,7 +11,11 @@ var bodyParser = require('body-parser');
 var app = express();
 var client = require('../models/client');
 
-// GET Client listing.
+/**
+ *
+ * Index
+ *
+ */
 app.get('/', function (req, res, next) {
 
     res.send('list of client applications ');
@@ -21,7 +25,25 @@ app.get('/', function (req, res, next) {
 
 /**
  *
- * Retreive Client
+ * Create
+ *
+ */
+app.post('/', function (req, reply) {
+
+    // Check model
+    client.create(req, function (result) {
+        console.log("client create");
+        reply.json({data: result});
+
+    });
+
+
+});
+
+
+/**
+ *
+ * Retrieve
  *
  */
 app.get('/:client_id', function (req, res, next) {
@@ -42,25 +64,9 @@ app.get('/:client_id', function (req, res, next) {
 
 /**
  *
- * Create Client
+ * Delete
  *
  */
-app.post('/', function (req, reply) {
-
-    // Check model
-    client.create(req, function (result) {
-        console.log("client create");
-        reply.json({data: result});
-
-    });
-
-
-});
-
-
-
-
-// DELETE client
 app.delete('/:client_id', function (req, res) {
     res.send('respond with a client delete ');
 });

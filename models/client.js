@@ -21,7 +21,7 @@ var uuid = require('node-uuid');
 
 /**
  *
- * Create a single item
+ * Create
  *
  * @param request
  * @param reply
@@ -72,7 +72,7 @@ exports.create = function (data, reply) {
 
 /**
  *
- * Find single item
+ * Retreive
  *
  * @param request
  * @param reply
