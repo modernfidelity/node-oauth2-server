@@ -6,7 +6,7 @@
  * Provides the handlers and schema definitions for the specific model
  *
  *
- * id, name, secret, user_id
+ * model = { id, name, secret, user_id }
  *
  *
  */
@@ -29,7 +29,7 @@ var uuid = require('node-uuid');
 exports.create = function (data, reply) {
 
 
-    console.log(data.body);
+    //console.log(data.body);
 
     var client = data.body;
 
@@ -39,6 +39,7 @@ exports.create = function (data, reply) {
     //// Hash the password with the salt
     var hash = bcrypt.hashSync(client.name, salt);
 
+    var client_id = uuid.v4();
 
     //
     //console.log(hash + '\n');
@@ -46,7 +47,7 @@ exports.create = function (data, reply) {
     //
     db.con.query('INSERT INTO clients (id, name, secret, user_id) VALUES (?, ?, ?, ?)', [
 
-        client.id,
+        client_id,
         client.name,
         hash, // secret
         client.user_id,
@@ -55,10 +56,12 @@ exports.create = function (data, reply) {
 
         if (err) throw err;
 
-        console.log('client created in db:\n');
+        //console.log('client created in db:\n');
 
         reply({
-            status: 'ok'
+
+            status: 'ok',
+            id: client_id
 
         });
 
