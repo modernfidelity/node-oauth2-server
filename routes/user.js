@@ -13,6 +13,9 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     app = express(),
     passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
+    BasicStrategy = require('passport-http').BasicStrategy,
+    auth = require('../controllers/auth'),
     user = require('../models/user');
 
 
@@ -23,18 +26,39 @@ var express = require('express'),
  *  @todo : review if this required + complete ? ...useful for groupings i.e. /users/students , /users/table-tennis-players
  *
  */
-app.get('/', function (req, res) {
 
-    var data = {}; // @todo : add pager data
+//app.get('/', function (req, res) {
+//
+//
+//    var data = {}; // @todo : add pager data
+//
+//    // Check model
+//    user.index(data, function (result) {
+//
+//        res.json({data: result});
+//
+//    });
+//
+//});
 
-    // Check model
-    user.index(data, function (result) {
 
-        res.json({data: result});
+app.get('/',
 
-    });
+    passport.authenticate('basic', {failureRedirect: '/login'}),
 
-});
+    function (req, res) {
+
+        // Check model
+        var data = {}; // @todo : add pager data
+
+        // Check model
+        user.index(data, function (result) {
+
+            res.json({data: result});
+
+        });
+    }
+);
 
 
 /**
@@ -42,16 +66,31 @@ app.get('/', function (req, res) {
  * Create
  *
  */
-app.post('/', function (userData, res) {
+//app.post('/', function (userData, res) {
+//
+//
+//    // Check model
+//    user.create(userData, function (result) {
+//
+//        res.json({data: result});
+//
+//    });
+//
+//});
 
-    // Check model
-    user.create(userData, function (result) {
+app.post('/login',
 
-        res.json({data: result});
+    passport.authenticate('local', {failureRedirect: '/login'}),
 
-    });
+    function (userData, res) {
+        // Check model
+        user.create(userData, function (result) {
 
-});
+            res.json({data: result});
+
+        });
+    }
+);
 
 
 /**

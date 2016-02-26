@@ -116,3 +116,57 @@ exports.findOne = function (uuid, reply) {
 
 
 };
+
+
+
+
+/**
+ *
+ * Validate Auth Request
+ *
+ * @param request
+ * @param reply
+ *
+ *
+ */
+
+exports.validate = function (request, reply) {
+
+    console.log("user validate ", request);
+
+    db.con.query('SELECT uuid, password FROM users where email = ? limit 1',
+        [
+            request.email
+        ],
+        function (err, results) {
+
+            if (err) throw err;
+
+            if (typeof results[0] !== 'undefined') {
+
+                var password = request.payload.password;
+
+                var hash = results[0].pass;
+
+                var passChecked = bcrypt.compareSync(password, hash); // true
+
+                if (passChecked === true) {
+
+                    // Generate JWT Token
+                    var token = generateJwtToken(request, results[0]);
+
+                    reply(token);
+
+                } else {
+
+                    reply(false);
+
+                }
+
+            } else {
+                reply(false);
+            }
+
+        });
+
+};
